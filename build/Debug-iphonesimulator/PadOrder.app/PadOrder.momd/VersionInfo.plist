@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSManagedObjectModel_CurrentVersionName</key>
+	<string>PadOrder</string>
+	<key>NSManagedObjectModel_VersionHashes</key>
+	<dict>
+		<key>PadOrder</key>
+		<dict>
+			<key>Call_Servise</key>
+			<data>
+			QvX7KfDH3+p2sNJ9pJPokHjKD9LVUae36oPkhBEAcuw=
+			</data>
+			<key>Dish_Kind</key>
+			<data>
+			RFNtnUQ2dwxMWKUg9NzcLAqS46XzbMlLxbSiQxdT+wg=
+			</data>
+			<key>Dishes</key>
+			<data>
+			kwXrRwILq62iViuBBvdy0/A/y97RnpPcIIDh0/sVUi4=
+			</data>
+			<key>Dishes_Describe</key>
+			<data>
+			gVMIBBfheKCRFe0WfJ90VGHMzl6SS64yDBzTyOxPX6c=
+			</data>
+			<key>Dishes_Images</key>
+			<data>
+			EiNaSzujPZ4YS5Cj/CjNXWhwOyWqrJLhT43Y7njH7Mc=
+			</data>
+			<key>Dishes_Set</key>
+			<data>
+			nQlCSNERdlaxzoBjHwMDMU2UUKnTPzqN6PnjSkEDBU0=
+			</data>
+			<key>Order_Flow</key>
+			<data>
+			xttkYcxRu/SjP5r+UjLnCzC84IlhuaHjwk+07QFK6rk=
+			</data>
+			<key>Ordered_Dish</key>
+			<data>
+			gAppAvKF3uKw8tp5yrLwu5mVip2GMRcrgvOimsIEjLI=
+			</data>
+			<key>Ordered_Info</key>
+			<data>
+			tagYwiI+GAbMrWrepzjvpBeYNAJO3igxoMsOso53cHQ=
+			</data>
+			<key>Save</key>
+			<data>
+			4e39rBqsgOz2g5oPl5P8mk6eyanzjRRB01p1vcemQ0Y=
+			</data>
+			<key>Save_Item</key>
+			<data>
+			U3OEtv/160UVj0m7ixGhMnyl/hnewYdDWnPaTJOGZvU=
+			</data>
+			<key>Status</key>
+			<data>
+			SgBc48k0bZQ9TbV6E65WtPng97cWtWNt3DhklGHZrqE=
+			</data>
+		</dict>
+	</dict>
+</dict>
+</plist>
