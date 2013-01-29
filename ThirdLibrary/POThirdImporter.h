@@ -10,3 +10,4 @@
 #import "ZipArchive.h"
 #import "Objective-Zip.h"
 #import "FBConnect.h"
+#import "ASIHTTPRequest.h"

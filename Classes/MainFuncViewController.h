@@ -7,21 +7,27 @@
 //
 
 #import <UIKit/UIKit.h>
-
+//#import "POViewController.h"
+@class MenuViewController;
 @class NewsViewController;
-@class DishViewController;
 @class MemberViewController;
 @class padOrderTabBarControllerDelegate;
 @class DishForRankViewController;
 @class DishForOrderViewController;
+@class SuggestViewController;
+@class RankingViewController;
 
 @interface MainFuncViewController : UIViewController<UITabBarDelegate,UITabBarControllerDelegate,UINavigationControllerDelegate,UINavigationBarDelegate> {
     UITabBarController *funcsTabBarController;
     
     NewsViewController *newsViewController;
-    DishViewController *dishViewController;
-    DishViewController *rankViewController;
+    MenuViewController *dishViewController;
+    //DishViewController *rankViewController;
+    RankingViewController *rankingViewController;
     MemberViewController *memberViewController;
+    SuggestViewController *suggestViewController;
+    
+    
     
     NSManagedObjectContext *managedObjectContext;
 }
@@ -32,5 +38,7 @@
 - (NSArray *) createTabBarArray;
 - (void) configureTabBarItem;
 - (UINavigationController *) convertViewController:(UIViewController *) rootController WithTitle:(NSString *)viewTitle;
+- (UINavigationController *) convertViewController:(UIViewController *) rootController  delegate:(id) delegate  WithTitle:(NSString *)viewTitle;
+- (void) folderSocialBar:(id)sender;
 
 @end

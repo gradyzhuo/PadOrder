@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
+#import "POAnimationController.h"
 
-@interface MoveAnimationController : NSObject {
+@interface MoveAnimationController : POAnimationController {
     UIView *beAnimation;
     UIColor *startBgColor;
     UIColor *endBgColor;
@@ -34,8 +35,6 @@
 - (UIImageView *) moveImage:(UIImage *)image inView:(UIView *)animationView  from:(CGRect)start to:(CGRect)end beginAlpha:(CGFloat) bAlpha endingAlpha:(CGFloat)eAlpha movingStartBackgroundColor:(UIColor *)startBg becomeEndBackgroundColor:(UIColor *)endBg;
 
 - (UIImageView *) moveViewScreenshot:(UIView *)aView inView:(UIView *)animationView from:(CGRect)start to:(CGRect)end withBeginAlpha:(CGFloat)bAlpha EndingAlpha:(CGFloat)eAlpha movingStartBackgroundColor:(UIColor *)startBg becomeEndBackgroundColor:(UIColor *) endBg;
-
-- (UIImage *)screenshotWithView:(UIView *)view;
 - (CGRect) relativeToAbsolute:(UIView *)view;
 - (void) action;
 - (void) releaseImageView:(UIImageView *)imageView;

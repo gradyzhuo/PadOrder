@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SLViewController.h"
 
 @class OrderedListViewController;
-@interface OrderedDetailViewController : UIViewController <UINavigationControllerDelegate>{
+@interface OrderedDetailViewController : SLViewController <UINavigationControllerDelegate>{
     UIBarButtonItem *showPopoverButton;
     UIBarButtonItem *backToSelected;
 }

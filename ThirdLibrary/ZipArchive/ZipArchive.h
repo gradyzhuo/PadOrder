@@ -13,8 +13,8 @@
 
 #import <UIKit/UIKit.h>
 
-#include "zip.h"
-#include "unzip.h"
+#include "minizip/zip.h"
+#include "minizip/unzip.h"
 
 
 @protocol ZipArchiveDelegate <NSObject>

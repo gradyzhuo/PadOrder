@@ -7,22 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AllEntity.h"
+#import "POTableViewController.h"
 #define ROW_HEIGHT 100;
 #define HEADER_HEIGHT 30;
 
 @class padOrderSplitControllerDelegate;
 @class padOrderDataManager;
-@class EntityOrderedDish;
-@class EntityDish;
 @class CustomCellView;
 @class OrderedListViewController;
 
 @class StatusModelController;
 @class OrderedDishModelController;
 @class OrderedInfoModelController;
-@class EntityOrderedInfo;
 @class Stack;
-@interface OrderedTableViewController : UITableViewController<UIActionSheetDelegate,UIAlertViewDelegate> {
+@interface OrderedTableViewController : POTableViewController<UIActionSheetDelegate,UIAlertViewDelegate> {
     NSDictionary *chineseHeader;
     NSFetchedResultsController *fetchedResultsController;
     OrderedListViewController *listViewController;
@@ -51,6 +50,5 @@
 - (void) countOrderedDishTotalPrice;
 - (void) sendOrderingList;
 - (void) hiddenObject;
-- (UIImage *) image:(UIImage *)image reSize:(CGSize)size;
 
 @end

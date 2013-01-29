@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "AllEntity.h"
+#import "SLViewController.h"
+#import "POViewController.h"
 
 @class OrderedTableViewController;
 @class padOrderAppDelegate;
@@ -18,7 +20,7 @@
 @class CustomAlertView;
 @class CookingTableViewController;
 
-@interface OrderedListViewController : UIViewController <UIAlertViewDelegate>{
+@interface OrderedListViewController : POViewController <UIAlertViewDelegate>{
     UITableView *tableView;
     OrderedTableViewController *orderedTableViewController;
     NSManagedObjectContext *managedObjectContext;
@@ -31,9 +33,13 @@
     UISegmentedControl *segmentControl;
     CookingTableViewController *cookingTableViewController;
     UINavigationBar *naviBar;
+    UIButton *deskNobutton;
+    UIPopoverController *popoverController;
+    
 }
 @property (nonatomic, retain) IBOutlet UIButton *submitButton;
 @property (nonatomic , retain) padOrderDataManager *padOrderDataManagerDelegate;
+@property (nonatomic, retain) IBOutlet UIButton *deskNobutton;
 @property (nonatomic, retain) IBOutlet OrderedTableViewController *orderedTableViewController;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *segmentControl;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
@@ -43,11 +49,12 @@
 @property (nonatomic, retain) IBOutlet UIButton *clearAllButton;
 @property (nonatomic, retain) IBOutlet UILabel *totalPriceLabel;
 @property (nonatomic, retain) NSNumber *totalPrice;
-
+@property (nonatomic, retain) UIPopoverController *popoverController;
 @property (nonatomic, retain) UINavigationBar *naviBar;
 
 @property (nonatomic, retain) CookingTableViewController *cookingTableViewController;
 
+- (void) showSegment:(BOOL)willShow;
 - (void) reloadTableViewSelectToIndexPath:(NSIndexPath *)indexPath usingAnimationTransition:(UIViewAnimationTransition)transition usingSelectAnimation:(BOOL) boolean;
 - (void) reloadTableViewScrollToIndexPath:(NSIndexPath *)indexPath usingAnimationTransition:(UIViewAnimationTransition)transition usingSelectAnimation:(BOOL) boolean;
 - (void)pureReloadTableViewWithAnimation:(BOOL)animation;

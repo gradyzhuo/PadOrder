@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "padOrderViewController.h"
+#import "POViewController.h"
 #import "DishDataTableViewController.h"
 #import "VarsButton.h"
+#import "EntityDish.h"
+#import "DishImagesModelController.h"
+#import "SRViewController.h"
 
-@interface DishDetailViewController : padOrderViewController {
+@interface DishDetailViewController : SRViewController {
     UINavigationBar *navigationBar;
     UIScrollView *contentScrollView;
     UIScrollView *moreImageScrollView;
@@ -19,10 +22,15 @@
     UILabel *dishTitle;
     UILabel *dishPrice;
     UITextView *dishDescription;
+    EntityDish *introDish;
     VarsButton *addButton;
     DishDataTableViewController *tableViewController;
 	NSIndexPath *indexPath;
+    DishImagesModelController *imageModelController;
+    SRViewController *beforeViewController;
+    UIButton *backButton;
 }
+@property (nonatomic, retain) EntityDish *introDish;
 @property (nonatomic, retain) IBOutlet UIScrollView *contentScrollView;
 @property (nonatomic, retain) DishDataTableViewController *tableViewController;
 @property (nonatomic, retain) IBOutlet VarsButton *addButton;
@@ -33,9 +41,11 @@
 @property (nonatomic, retain) IBOutlet UILabel *dishPrice;
 @property (nonatomic, retain) IBOutlet UIScrollView *moreImageScrollView;
 @property (nonatomic, retain) NSIndexPath *indexPath;
+@property (nonatomic, retain) DishImagesModelController *imageModelController;
+@property (nonatomic, retain) IBOutlet UIButton *backButton;
+@property (nonatomic, retain) SRViewController *beforeViewController;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil indexPath:(NSIndexPath *)indexPath;
-
+- (IBAction) backToMenu:(id)sender;
 - (BOOL) resetContentScrollFrameWithOrientation:(UIInterfaceOrientation)interfaceOrientation;
-
+-(id)initWithDish:(EntityDish *)dish;
 @end

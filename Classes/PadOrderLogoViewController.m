@@ -13,6 +13,8 @@
 
 @implementation PadOrderLogoViewController
 @synthesize exitButton;
+@synthesize httpRequest;
+
 //@synthesize informationLabel;
 //@synthesize scrollView;
 
@@ -26,7 +28,7 @@
         //CGFloat endY = (screenFrame.size.height/4);
         CGFloat width = (screenFrame.size.width/2);
         CGFloat height = (screenFrame.size.height/2);
-        NSLog(@"a:%f",height);
+//        NSLog(@"a:%f",height);
         
         //NSLog(@"%@",[self view]);
         //self.view.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
@@ -95,7 +97,7 @@
     CGSize frameSize = frame.size;
     //CGPoint framePoint = frame.origin;
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, frameSize.width, HEIGHT_ADDER)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 300, HEIGHT_ADDER)];
     label.backgroundColor = [UIColor clearColor];
     
     
@@ -110,11 +112,19 @@
             [string appendFormat:@"%@: %@\n",key,object];
             [self createInfoLabelHeight:label];
         }
+        else if([[object class] isSubclassOfClass:[NSDictionary class]]){
+            [string appendFormat:@"%@: \n",key];
+            [self createInfoLabelHeight:label];
+            for (id otherKey in [object allKeys]) {
+                [string appendFormat:@"\t\t\t\t%@ : %@\n",otherKey,[object objectForKey:otherKey]];
+                [self createInfoLabelHeight:label];
+            }
+        }
         else{
             [string appendFormat:@"%@: \n",key];
             [self createInfoLabelHeight:label];
-            for (id object in [dict objectForKey:key]) {
-                [string appendFormat:@"\t\t\t\t%@\n",object];
+            for (id item in object) {
+                [string appendFormat:@"\t\t\t\t%@\n",item];
                 [self createInfoLabelHeight:label];
             }
         }
@@ -166,10 +176,39 @@
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:plistPath];
     NSMutableString *string = [NSMutableString string];
     [string appendFormat:@"Version: %@",[dict objectForKey:@"Version"]];
-    
-    
+    return string;
 }
 
+- (IBAction)refreshDishImages:(id)sender{
+    //UIAlertView *waittingAlertView = [[UIAlertView alloc] initWithTitle:@"更新中..." message:@"Replace" delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
+    //[waittingAlertView show];
+    
+    NSURL *fromURL = [NSURL URLWithString:@"http://padorder.appspot.com/R00001/DishImages.zip"];
+    NSURL *toURL = [[self.applicationDelegate applicationDocumentsDirectory] URLByAppendingPathComponent:@"DishImages.zip"];
+    NSURL *dirURL = [self.applicationDelegate applicationDocumentsDirectory];
+    //toURL = [self.applicationDelegate applicationDocumentsDirectory] ;
+    self.httpRequest = [ASIHTTPRequest requestWithURL:fromURL];
+    [self.httpRequest setDownloadDestinationPath:[toURL path]];
+    [self.httpRequest startSynchronous];
+    
+    ZipArchive* za = [[ZipArchive alloc] init];
+    
+    if([za UnzipOpenFile:[toURL path]]){
+        if ([za UnzipFileTo:[dirURL path] overWrite:YES]) {
+            //[waittingAlertView ]
+        }	
+		else{
+            NSLog(@"Failed");
+        }
+        [za UnzipCloseFile];
+        
+    }else {
+        UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"解壓縮失敗" message:@"解壓縮開啟檔案失敗！請聯絡系統管理員！" delegate:nil cancelButtonTitle:@"確定" otherButtonTitles:nil];
+        [errorAlert show];
+        [errorAlert release];
+    }
+    
+}
 
 - (void)viewDidUnload
 {

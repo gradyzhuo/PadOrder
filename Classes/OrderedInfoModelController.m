@@ -20,7 +20,7 @@
 #pragma mark Initialization
 
 - (id) init{
-    if(self = [super init]){
+    if((self = [super init])){
         self.entity = [NSEntityDescription entityForName:@"Ordered_Info" inManagedObjectContext:managedObjectContext];
     }
     return self;
@@ -71,6 +71,7 @@
 }
 
 - (EntityOrderedInfo *)orderedInfoFetchedWithDish:(EntityDish *)dish withStatus:(NSInteger)status{
+    
     StatusModelController *statusModelController = [[StatusModelController alloc] init];
     
     
@@ -93,8 +94,7 @@
     return [array objectAtIndex:0];
 }
 
-
-- (NSFetchedResultsController *) fetchedDishSelectStatus:(NSInteger)status{
+- (NSFetchedResultsController *)fetchedDishSelectStatus:(NSInteger)status{
     //Delete Cache avoid Data Error
     [NSFetchedResultsController deleteCacheWithName:@"SelectStatus"];
     //Create a fetch request
@@ -114,6 +114,38 @@
     NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:managedObjectContext                                             sectionNameKeyPath:nil cacheName:@"SelectStatus"];
     [fetchedResultsController performFetch:&error];
     [fetchRequest release];
+    return fetchedResultsController;
+}
+
+
+- (NSFetchedResultsController *) fetchedDishSelectStatus:(NSInteger)status withSection:(NSString *)useSection{
+    
+    [NSFetchedResultsController deleteCacheWithName:@"SelectInfoStatus"];
+    //Create a fetch request
+    NSFetchRequest  *fetchRequest = [self createSimpleFetchRequest];
+
+    //Create somethin for request 
+    NSPredicate *predicate = nil;
+    
+    predicate= [NSPredicate predicateWithFormat:@"Status.Status_No = %d",status];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Status.Status_No" ascending:YES];
+    
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] 
+                                                            initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext 
+                                                            sectionNameKeyPath:useSection
+                                                            cacheName:@"SelectInfoStatus"];
+    
+    [self performFetchedResultsController:fetchedResultsController];
+    
+    [fetchRequest release];
+    [predicate release];
+    
     return fetchedResultsController;
 }
 
@@ -247,7 +279,7 @@
 }
 
 - (BOOL) isExistOrderingList{
-    return  [[[self fetchedDishSelectStatus:0] fetchedObjects] count] > 0;
+    return  [[[self fetchedDishSelectStatus:0 withSection:nil] fetchedObjects] count] > 0;
 }
 
 

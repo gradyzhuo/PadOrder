@@ -38,9 +38,11 @@
 
 - (void) refreshFetchedResultsController:(NSFetchedResultsController *)fetchResultsController{
     NSError *error = nil;
-    
+    //NSLog(@"Objects:%@",fetchResultsController.fetchedObjects);
+    //[fetchResultsController performFetch:&error];
+    //NSLog(@"Error!!%@",error);
     if(![fetchResultsController performFetch:&error]){
-        //(@"Error!!%@",error);
+        NSLog(@"Error!!%@",error);
     }    
 }
 
@@ -51,14 +53,15 @@
 }
 
 - (void) saveToContext{
-    NSError *error = nil;
-    if (![managedObjectContext save:&error]) {
+    NSError *error = [NSError new];
+    BOOL result = [managedObjectContext save:&error];
+    if (!result) {
         /*
          Replace this implementation with code to handle the error appropriately.
          
          abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
          */
-        //(@"Unresolved error %@, %@", error, [error userInfo]);
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
 }
@@ -79,10 +82,25 @@
     return [self executeFetchRequest:fetchRequest];
 }
 
+- (NSArray *) entitiesWithPredicate:(NSPredicate *)predicate sortBy:(NSString *)keyPath ascending:(BOOL)asc{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:keyPath ascending:asc];
+    [fetchRequest setEntity:self.entity];
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    return [self executeFetchRequest:fetchRequest];
+}
 
 - (NSArray *) getFetchedResultWithPredicate:(NSString *)predicateString sortBy:(NSString *)valueKey ascending:(BOOL)asc{
     return [self entity:[self.entity name] withPredicate:predicateString sortBy:valueKey ascending:asc];
 }
 
+- (void)performFetchedResultsController:(NSFetchedResultsController *)aFetchedResultsController{
+    [aFetchedResultsController performFetch:&error];
+    if (error) {
+        UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"錯誤" message:[NSString stringWithFormat:@"%@",error] delegate:self cancelButtonTitle:@"確定" otherButtonTitles:nil];
+        [errorAlertView show];
+    }
+}
 
 @end

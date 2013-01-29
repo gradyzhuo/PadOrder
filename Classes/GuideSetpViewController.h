@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "padOrderLandscapeViewController.h"
+//#import "POLandscapeViewController.h"
+#import "POViewController.h"
 
-@interface GuideSetpViewController : padOrderLandscapeViewController <UINavigationControllerDelegate>{
+@interface GuideSetpViewController : POViewController <UINavigationControllerDelegate>{
 }
 
 

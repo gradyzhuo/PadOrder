@@ -10,7 +10,7 @@
 
 
 @class padOrderSplitControllerDelegate;
-@class padOrderDataManager;
+//@class padOrderDataManager;
 @class EntityOrderedDish;
 @class EntityDish;
 @class CustomCellView;

@@ -8,32 +8,41 @@
 
 #import <Foundation/Foundation.h>
 #import "TableCellViewClass.h"
-//#import "DishDataTableViewController.h"
+#import "DishDataTableViewController.h"
+#import "POAnimationController.h"
+#import "PODropView.h"
 
-@class EntityDish;
 @interface DishTableCellView : TableCellViewClass<UITableViewDelegate>{
-    EntityDish *dishEntityInfo;
+    UIImage *dishImage_noshadow;
     NSString *dishTitle;
     NSString *descriptText;
     NSString *dishImageName;
-    UITableViewController *dataTableViewController;
+    DishDataTableViewController *dataTableViewController;
     NSNumber *dishPrice;
     NSString *buttonBgPicName;
     NSString *detailButtonBgPicName;
 	NSInteger hotValue;
+    NSString *specifyShowText;
     BOOL isExistDishImage;
 }
 
+@property (nonatomic, retain) UIImage *dishImage_noshadow;
 @property (nonatomic, retain) NSString *buttonBgPicName;
 @property (nonatomic, retain) NSString *detailButtonBgPicName;
-@property (nonatomic, retain) EntityDish *dishEntityInfo;
 @property (nonatomic, retain) NSString *dishTitle;
 @property (nonatomic, retain) NSString *dishImageName;
 @property (nonatomic, retain) NSString *descriptText;
 @property (nonatomic, retain) NSNumber *dishPrice;
-@property (nonatomic, retain) UITableViewController *dataTableViewController;
+@property (nonatomic, retain) DishDataTableViewController *dataTableViewController;
 @property (nonatomic) NSInteger hotValue;
 @property (nonatomic) BOOL isExistDishImage;
+@property (nonatomic, retain) NSString *specifyShowText;
+@property (nonatomic, retain) UILabel *dishOrderCountLabel;
+@property (nonatomic, retain) UILabel *dishNameLabel;
+@property (nonatomic) NSInteger orderCount;
 //- (void) setDishPicture:(NSString *)imageName;
 //- (void) setSubmitButton:(NSString *)normal onPressed:(NSString *)pressed;
+- (void) tableViewEnableScroll;
+- (void) removeView:(UIView *)view;
+- (void) removeTipView;
 @end

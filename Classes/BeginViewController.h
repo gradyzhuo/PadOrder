@@ -7,14 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "padOrderLandscapeViewController.h"
+//#import "POLandscapeViewController.h"
 #import "PadOrderLogoViewController.h"
-@interface BeginViewController : padOrderLandscapeViewController<UIAlertViewDelegate> {
+@interface BeginViewController :POViewController<UIAlertViewDelegate> {
     UIButton *infoButton;
     NSInteger nextIndex;
     PadOrderLogoViewController *logoViewController;
     UIView *blackView;
     UINavigationController *testController;
+    UILabel *currentUser;
+    UILabel *restaurtantNameLabel;
 }
 
 @property (nonatomic, retain) IBOutlet UIButton *infoButton;
@@ -22,6 +24,8 @@
 @property (nonatomic, retain) PadOrderLogoViewController *logoViewController;
 @property (nonatomic, retain) UIView *blackView;
 @property (nonatomic, retain) UINavigationController *testController;
+@property (nonatomic, retain) IBOutlet UILabel *currentUser;
+@property (nonatomic, retain) IBOutlet UILabel *restaurtantNameLabel;
 
 - (IBAction) actionToNext:(id)sender;
 - (IBAction) showPadOrderInformation:(id)sender;

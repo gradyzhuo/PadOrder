@@ -97,6 +97,7 @@
     
     //NSIndexPath *insertionPath = [fetchedResultsController indexPathForObject:newManagedObject];
     //[tableView selectRowAtIndexPath:insertionPath animated:YES scrollPosition:UITableViewScrollPositionTop];
+    [orderedDish release];
 }
 
 //原始的插入內容資料

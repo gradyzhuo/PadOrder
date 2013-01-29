@@ -45,7 +45,9 @@
     
     NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:managedObjectContext 
               sectionNameKeyPath:nil cacheName:@"OrderedDishes"];
-    [fetchRequest release];
+    //[fetchRequest release];
+    [sortDescriptors release];
+    
     return fetchedResultsController;
 }
 
@@ -134,5 +136,53 @@
     
 }
 
+- (NSFetchedResultsController *)fetchedResultsControllerFortopRankingFromDays:(NSInteger)days{
+    [NSFetchedResultsController deleteCacheWithName:@"OrderedDishCount"];
+    
+    
+    
+    NSFetchRequest  *fetchRequest = [self createSimpleFetchRequest];
+    //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ - now"];
+    NSExpression *keyPathExpression = [NSExpression expressionForKeyPath:@"Dish"];
+    NSExpression *countOrderedDishExpression = [NSExpression expressionForFunction:@"count:" arguments:[NSArray arrayWithObject:keyPathExpression]];
+    
+    NSExpressionDescription *expressionDescription = [[NSExpressionDescription alloc] init];
+    [expressionDescription setName:@"DishCount"];
+    [expressionDescription setExpression:countOrderedDishExpression];
+    [expressionDescription setExpressionResultType:NSInteger16AttributeType];
+    
+    //[fetchRequest setPropertiesToFetch:[NSArray arrayWithObject:expressionDescription]];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Dish.Dish_No" ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+    
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:managedObjectContext sectionNameKeyPath:@"Dish" cacheName:@"OrderedDishCount"];
+    
+    
+    [self performFetchedResultsController:fetchedResultsController];
+    
+    for (id <NSFetchedResultsSectionInfo> sectionInfo in [fetchedResultsController sections]) {
+        NSLog(@"%@,%d",[sectionInfo indexTitle],[sectionInfo numberOfObjects]);
+    }
+    
+    
+    //EntityOrderedDish *test = [fetchedResultsController.fetchedObjects objectAtIndex:0];
+    NSLog(@"%@",fetchedResultsController.fetchedObjects);
+    //NSLog(@"%d",[test valueForKey:@"DishCount"]);
+    //Create somethin for request 
+    //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"Ordered_Dish.Dish_No=%@ AND Status.Status_No=0",[dish Dish_No]];
+    //NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Dish_Index" ascending:YES];
+   // NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+    //[fetchRequest setPredicate:predicate];
+    //[fetchRequest setSortDescriptors:sortDescriptors];
+    //[fetchRequest setResultType:NSManagedObjectResultType];
+
+    //NSMutableArray *items = [[managedObjectContext executeFetchRequest:fetchRequest error:&error] mutableCopy];
+    
+    //[items release];
+    [fetchRequest release];
+    return fetchedResultsController;
+}
 
 @end

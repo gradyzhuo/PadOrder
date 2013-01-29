@@ -7,8 +7,14 @@
 //
 
 #import "DishDataModelController.h"
+#import "DishDescribeModelController.h"
+#import "DishImagesModelController.h"
+#import "DishSetModelController.h"
+#import "DishKindModelController.h"
+
 #import "OrderedDishModelController.h"
 #import "OrderedInfoModelController.h"
-#import "OrderKindModelController.h"
-#import "DishImagesModelController.h"
 #import "StatusModelController.h"
+#import "MemberModelController.h"
+#import "MemberSaveModelController.h"
+#import "RankingDataModelController.h"

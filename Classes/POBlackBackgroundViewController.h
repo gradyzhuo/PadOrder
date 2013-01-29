@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "POViewController.h"
 
-
-@interface POBlackBackgroundViewController : UIViewController {
+@interface POBlackBackgroundViewController : POViewController {
     
 }
 

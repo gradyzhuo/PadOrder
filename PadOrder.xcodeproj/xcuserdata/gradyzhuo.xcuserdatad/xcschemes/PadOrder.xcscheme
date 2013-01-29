@@ -16,7 +16,7 @@
                BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
                BuildableName = "PadOrder.app"
                BlueprintName = "PadOrder"
-               ReferencedContainer = "container:PadOrder.xcodeproj">
+               ReferencedContainer = "container:padorder.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -25,13 +25,23 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      buildConfiguration = "Debug">
+      buildConfiguration = "Release">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7913B30C135ED546003D4ADA"
+               BuildableName = "PadOrder_Unittest.octest"
+               BlueprintName = "PadOrder_Unittest"
+               ReferencedContainer = "container:padorder.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
+      selectedDebuggerIdentifier = ""
+      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
       displayScaleIsEnabled = "NO"
       displayScale = "1.00"
       launchStyle = "0"
@@ -43,7 +53,7 @@
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
             BuildableName = "PadOrder.app"
             BlueprintName = "PadOrder"
-            ReferencedContainer = "container:PadOrder.xcodeproj">
+            ReferencedContainer = "container:padorder.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -62,12 +72,12 @@
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
             BuildableName = "PadOrder.app"
             BlueprintName = "PadOrder"
-            ReferencedContainer = "container:PadOrder.xcodeproj">
+            ReferencedContainer = "container:padorder.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Debug">
+      buildConfiguration = "Release">
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"

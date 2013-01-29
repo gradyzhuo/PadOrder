@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en_US</string>
+	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleDocumentTypes</key>
@@ -12,8 +12,12 @@
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
 	<string>icon.png</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>Icon.png</string>
+	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.gradycho.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.gradyzhuo.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -27,6 +31,8 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string>7</string>
 			<key>CFBundleURLName</key>
 			<string>padorder</string>
 			<key>CFBundleURLSchemes</key>
@@ -41,17 +47,29 @@
 				</dict>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string>closebox</string>
+			<key>CFBundleURLName</key>
+			<string>facebook connector</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb172228222789173</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>0.1.14-alpha1</string>
+	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
-	<false/>
+	<true/>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
 	<key>UIApplicationExitsOnSuspend</key>
 	<true/>
 	<key>UIPrerenderedIcon</key>
-	<true/>
+	<false/>
 	<key>UIStatusBarHidden</key>
 	<false/>
 	<key>UISupportedInterfaceOrientations</key>

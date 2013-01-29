@@ -8,12 +8,12 @@
 
 #import "MainFuncViewController.h"
 #import "NewsViewController.h"
-#import "DishViewController.h"
+#import "MenuViewController.h"
 #import "MemberViewController.h"
+#import "RankingViewController.h"
 #import "padOrderTabBarControllerDelegate.h"
 #import "padOrderSplitControllerDelegate.h"
-#import "DishForRankViewController.h"
-#import "DishForOrderViewController.h"
+#import "SuggestViewController.h"
 
 @implementation MainFuncViewController
 @synthesize funcsTabBarController;
@@ -23,43 +23,60 @@
 #pragma mark -
 #pragma mark 自定方法
 
+- (void) folderSocialBar:(id)sender{
+    
+    //[UIView beginAnimations:@"FolderAnimation" context:nil];
+    UINavigationBar *navigationBar = [self.funcsTabBarController.view viewWithTag:3001];
+    navigationBar.hidden = !navigationBar.hidden;
+}
+
 - (NSArray *) createTabBarArray{
+    
+    //
+    //實體化所有的ViewController
     newsViewController = [[NewsViewController alloc] initWithNibName:@"NewsView" bundle:[NSBundle mainBundle]];
-    dishViewController = [[DishForOrderViewController alloc] initWithNibName:@"DishView" bundle:[NSBundle mainBundle]];
-    rankViewController = [[DishForRankViewController alloc] initWithNibName:@"DishView" bundle:[NSBundle mainBundle]];
+    dishViewController = [[MenuViewController alloc] initWithNibName:@"MenuView" bundle:[NSBundle mainBundle]];
+    //rankViewController = [[DishForRankViewController alloc] initWithNibName:@"DishView" bundle:[NSBundle mainBundle]];
+    rankingViewController = [[RankingViewController alloc] initWithNibName:@"RankingView" bundle:[NSBundle mainBundle]];
     memberViewController = [[MemberViewController alloc] initWithNibName:@"MemberView" bundle:[NSBundle mainBundle]];
+    suggestViewController = [[SuggestViewController alloc] initWithNibName:@"SuggestView" bundle:[NSBundle mainBundle]];
     
-    UINavigationController *starterView = [self convertViewController: [[UIViewController alloc] init] WithTitle:@"回首頁"];
-    
-    UINavigationController *dishNavController = [self convertViewController:dishViewController WithTitle:@"點餐服務"];
-    UINavigationController *rankNavController = [self convertViewController:rankViewController WithTitle:@"人氣排行"];
-    UINavigationController *callService = [self convertViewController: [[UIViewController alloc] init] WithTitle:@"使用服務鈴"];
-    UINavigationController *memberNavController = [self convertViewController:memberViewController WithTitle:@"會員專區"];
-    
-    dishNavController.delegate = self;
-    rankNavController.delegate = self;
-    memberNavController.delegate = self;
+    [newsViewController retain];
+    [dishViewController retain];
+    [rankingViewController retain];
+    [memberViewController retain];
+    [suggestViewController retain];
     
     
-    //dishNavController.navigationBar.delegate = self;
-    //rankNavController.navigationBar.delegate = self;
-    //memberNavController.navigationBar.delegate = self;
+    
+    //
+    //設定所有的ViewController成為NavigationController
+    
+    UINavigationController *starterView = [self convertViewController: [[UIViewController alloc] init] delegate:nil WithTitle:@"回首頁"];
+    
+    UINavigationController *dishNavController = [self convertViewController:dishViewController delegate:self WithTitle:@"完整菜單"];
+    
+    UINavigationController *suggestNavController = [self convertViewController:suggestViewController delegate:self WithTitle:@"主廚推薦"];
+    
+    //suggestNavController.navigationBarHidden = YES;
+    
+    UINavigationController *rankNavController = [self convertViewController:rankingViewController delegate:self WithTitle:@"人氣排行"];
+    
+    UINavigationController *callService = [self convertViewController: [[UIViewController alloc] init] delegate:nil WithTitle:@"使用服務鈴"];
+    
+    UINavigationController *memberNavController = [self convertViewController:memberViewController delegate:self WithTitle:@"會員專區"];
     
     starterView.view.tag = 0;
-    dishNavController.view.tag = 1;
-    rankNavController.view.tag = 2;
-    callService.view.tag = 3;
-    memberNavController.view.tag = 4;
+    suggestNavController.view.tag = 1;
+    dishNavController.view.tag = 2;
+    rankNavController.view.tag = 3;
+    callService.view.tag = 4;
+    memberNavController.view.tag = 5;
     
-        //NSArray *resultArray = [NSArray arrayWithObjects:newsNavController,
-        //                  dishNavController,                                                                                    
-        //                  rankNavController,                                                                                    
-        //                  callService,                                                                                    
-        //                  memberNavController,                                                                                    
-        //                  nil];
     NSArray *resultArray = [NSArray arrayWithObjects:
                             starterView,
-                            dishNavController,                                                                                    
+                            suggestNavController,
+                            dishNavController,  
                             rankNavController,                                                                                    
                             callService, 
                             memberNavController,
@@ -72,8 +89,9 @@
     NSInteger index = 0;
     
     for (UITabBarItem *item in self.funcsTabBarController.tabBar.items) {
-        //item = [item initWithTitle:item.title image:[NSString stringWithFormat:@"tabBarItem%d.png",index] tag:index];
-        item.image = [UIImage imageNamed:[NSString stringWithFormat:@"tabBarItem%d.png",index]];
+        UINavigationController *aViewController = [self.funcsTabBarController.viewControllers objectAtIndex:index];
+        
+        item.image = [UIImage imageNamed:[NSString stringWithFormat:@"Symbol_%d.png",aViewController.view.tag]];
         index ++;
     }
 }
@@ -83,7 +101,15 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rootController];
     navController.delegate = self;
     navController.navigationBar.tintColor = [UIColor grayColor];
-    return navController;
+    return [navController autorelease];
+}
+
+
+- (UINavigationController *)convertViewController:(UIViewController *)rootController delegate:(id)delegate WithTitle:(NSString *)viewTitle{
+    
+    UINavigationController *navigationController = [self convertViewController:rootController WithTitle:viewTitle];
+    navigationController.delegate = delegate;
+    return navigationController;
 }
 
 #pragma mark -
@@ -144,19 +170,14 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
    [super viewDidLoad];
-    //NSLog(@"View Did Load");
-    //self.funcsTabBarController.tabBar.frame = CGRectMake(0, 0, 200, 200);
-    
-    UITabBarItem *item1 = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemContacts tag:5];
-        //UITabBarItem *item2 = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemContacts tag:1];
-        //UITabBarItem *item3 = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemContacts tag:2];
-        //self.funcsTabBarController.tabBar.items = [NSArray arrayWithObjects:item1,item2,item3,nil];
+    self.funcsTabBarController = [[UITabBarController alloc] init];
+    //self.funcsTabBarController = [[UITabBarController alloc] initWithNibName:@"MainFuncView" bundle:[NSBundle mainBundle]];
     self.funcsTabBarController.viewControllers = [self createTabBarArray];
-    
-    //self.funcsTabBarController.tabBar.backgroundColor = [UIColor redColor];
     
     //這裡要設定第一個要被顯示的初始畫面
     UINavigationController *setupFirstNavController = [self.funcsTabBarController.viewControllers objectAtIndex:1];
+    
+    //self.funcsTabBarController.selectedViewController = setupFirstNavController;
     
      //指定tabBarController的委派物件
     padOrderTabBarControllerDelegate *tabBarDelegate = [[padOrderTabBarControllerDelegate alloc] init];
@@ -166,26 +187,66 @@
 //    tabBarDelegate.splitPopoverButton = (UINavigationItem *)setupFirstNavController.topViewController.navigationItem.leftBarButtonItem;
     
     //透過Delegate才可以讓後續的AlertVew設定不會出現問題
-    [tabBarDelegate tabBarController:funcsTabBarController 
-                                  didSelectViewController:setupFirstNavController];
+    [tabBarDelegate tabBarController:funcsTabBarController didSelectViewController:setupFirstNavController];
     
     self.funcsTabBarController.delegate = tabBarDelegate;
     
-    [self setView: self.funcsTabBarController.view];
+    
+    
+    /*
+    CGFloat x = 0;
+    CGFloat y = 620;
+    
+    UINavigationBar *navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(x, y, self.funcsTabBarController.tabBar.frame.size.width, 80)];
+    navigationBar.translucent = YES;
+    navigationBar.tintColor = [UIColor colorWithWhite:0.3 alpha:0];
+    navigationBar.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
+    navigationBar.tag = 3001;
+    
+    UIButton *folderButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [folderButton addTarget:self action:@selector(folderSocialBar:) forControlEvents:UIControlEventTouchUpInside];
+    folderButton.frame = CGRectMake(0,600,20,20);
+    //UIView *view =[[UIView alloc] initWithFrame:CGRectMake(0,600,20,20)];
+    //view.backgroundColor = [UIColor redColor];
+    
+    
+    [self.funcsTabBarController.view addSubview:navigationBar];
+    [self.funcsTabBarController.view addSubview:folderButton];
+    */
+
+    //self.funcsTabBarController.tabBar.backgroundColor = [UIColor redColor];
+    
+    
+    //UIColor *kMainColor = [UIColor colorWithRed:0.41 green:0.68 blue:0.74 alpha:0.7];
+    //UIColor *kMainColor = [UIColor colorWithHue:191 saturation:0.44 brightness:0.74 alpha:1];
+    /*UIImage *image = [UIImage imageNamed:@"tabbar.png"];
+
+    UIColor *kMainColor = [UIColor colorWithPatternImage:image];
+    CGRect frame = CGRectMake(0.0, 0.0, 768, 49);
+    UIView *v = [[UIView alloc] initWithFrame:frame];
+    [v setBackgroundColor:kMainColor];
+    
+    [self.funcsTabBarController.tabBar addSubview:v];
+    [v release];
+    */
+    
+    //UILabel *label = [[[self.funcsTabBarController.tabBar.subviews objectAtIndex:0] subviews] lastObject];
+    //label.textColor = [UIColor whiteColor];
+    //label.font = [UIFont fontWithName:label.font.fontName size:30];
+    //NSLog(@"tabbar.sub:%@",[[self.funcsTabBarController.tabBar.subviews objectAtIndex:0] subviews]);
+    
     [self configureTabBarItem];
-    [setupFirstNavController release];
+    [self setView: self.funcsTabBarController.view];
+    //[self.view addSubview:self.funcsTabBarController.view];
+    //[setupFirstNavController release];
     
 }
 
 
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Overriden to allow any orientation.
-    
-    padOrderTabBarControllerDelegate *delegate =  (padOrderTabBarControllerDelegate *)self.funcsTabBarController.delegate;
-    BOOL canRotate = YES;
-    if(delegate.actionSheet.visible) canRotate = NO;
-    //else return YES;
-    return canRotate;
+    return YES;
 }
 
 

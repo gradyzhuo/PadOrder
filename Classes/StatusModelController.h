@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "padOrderModelObject.h"
 #import "Stack.h"
+#import "AllEntity.h"
 
-@class EntityStatus;
 @interface StatusModelController : padOrderModelObject{
     
 }

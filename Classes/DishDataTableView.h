@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "padOrderAppDelegate.h"
 
 @class DishDataTableViewController;
 @interface DishDataTableView : UITableView <UITableViewDelegate>{
     DishDataTableViewController *dishDataTableViewController;
+    //padOrderAppDelegate *applicationDelegate;
 }
 
 @property (nonatomic,retain) DishDataTableViewController *dishDataTableViewController;
+//@property (nonatomic, retain) padOrderAppDelegate *applicationDelegate;
 
 @end

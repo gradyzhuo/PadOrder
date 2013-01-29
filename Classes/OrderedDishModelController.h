@@ -9,9 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "padOrderModelObject.h"
 #import "Stack.h"
-
-@class EntityDish;
-@class EntityOrderedDish;
+#import "AllEntity.h"
 
 @interface OrderedDishModelController : padOrderModelObject {
     
@@ -25,6 +23,6 @@
 - (void) refreshFetchedResultsController:(NSFetchedResultsController *)fetchResultsController;
 - (NSMutableArray *) mutableArrayWithDish:(EntityDish *)dish;
 - (void) insertBeOrderedDish: (EntityDish *) dish;
-
+- (NSFetchedResultsController *)fetchedResultsControllerFortopRankingFromDays:(NSInteger)days;
 @end
 

@@ -9,6 +9,7 @@
 #import "DishDataTableView.h"
 #import "DishDataTableViewController.h"
 
+
 @implementation DishDataTableView
 @synthesize dishDataTableViewController;
 
@@ -23,7 +24,7 @@
 }
 
 - (id) initWithFrame:(CGRect)frame style:(UITableViewStyle)style{
-    if(self = [super initWithFrame:frame style:style]){
+    if((self = [super initWithFrame:frame style:style])){
         //self.delegate = self.dishDataTableViewController;
         //self.dataSource = self.dishDataTableViewController;
         
@@ -38,6 +39,20 @@
     // Drawing code
 }
 */
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    NSLog(@"TABLE TOUCH");
+}
+
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    NSLog(@"Scrolling");
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    NSLog(@"Dragging");
+}
+
 
 
 - (void)dealloc {

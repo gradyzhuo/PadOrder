@@ -8,17 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import "padOrderModelObject.h"
+#import "AllEntity.h"
 #import "Stack.h"
 
-@class EntityOrderedInfo;
-@class EntityOrderedDish;
-@class EntityDish;
+
 @interface OrderedInfoModelController : padOrderModelObject {
     
 }
 - (NSFetchedResultsController *) fetchedDishSelectStatusFrom:(NSInteger)from to:(NSInteger)to;
 - (NSFetchedResultsController *) fetchedResultsControllerGroupByStatus;
-- (NSFetchedResultsController *) fetchedDishSelectStatus:(NSInteger)status;
+- (NSFetchedResultsController *) fetchedDishSelectStatus:(NSInteger)status withSection:(NSString *)useSection;
 - (EntityOrderedInfo *)orderedInfoFetchedWithDish:(EntityDish *)dish;
 - (EntityOrderedInfo *)orderedInfoFetchedWithDish:(EntityDish *)dish withStatus:(NSInteger)status;
 - (Stack *) mutableArrayWithDish:(EntityDish *)dish;

@@ -51,10 +51,10 @@
     [self.orderedInfoModelController changeOrderedDishFromStatus:0 toStatus:1];
     //重新擷取資料庫資料，以便顯示的資料是最新的
     [orderedInfoModelController refreshFetchedResultsController:fetchedResultsController];  
-    [listViewController refreshPriceLabel];  
-    [listViewController refreshPriceLabel];
+    //[listViewController refreshPriceLabel];  
+    //[listViewController refreshPriceLabel];
     //更新合計標籤
-    [listViewController refreshPriceLabel];;
+    [listViewController refreshPriceLabel];
     [self reloadTableViewSelectToIndexPath:nil usingAnimationTransition:UIViewAnimationTransitionCurlUp usingSelectAnimation:YES];    
 }
 
@@ -77,8 +77,8 @@
 - (NSIndexPath *) indexPathAndRefreshWithEntity:(EntityOrderedInfo *)infoEntity{
     //重新擷取資料庫資料，以便顯示的資料是最新的
     [orderedInfoModelController refreshFetchedResultsController:fetchedResultsController];  
-    [listViewController refreshPriceLabel];  
-    [listViewController refreshPriceLabel];
+    //[listViewController refreshPriceLabel];  
+    //[listViewController refreshPriceLabel];
     //更新合計標籤
     [listViewController refreshPriceLabel];;
     return [self.fetchedResultsController indexPathForObject:infoEntity];
@@ -112,10 +112,10 @@
     if ((self = [super initWithStyle:style])) {
         self.totalPrice = 0;
         
-        self.orderedDishModelController = [[OrderedDishModelController alloc] init];
-        self.orderedInfoModelController = [[OrderedInfoModelController alloc] init];
+        self.orderedDishModelController = [[[OrderedDishModelController alloc] init] autorelease];
+        self.orderedInfoModelController = [[[OrderedInfoModelController alloc] init] autorelease];
         
-        self.chineseHeader = [[[StatusModelController alloc] init] statusNoToNameDictionary];        
+        self.chineseHeader = [[[[StatusModelController alloc] init] autorelease] statusNoToNameDictionary];        
         //NSLog(@"%@",self.chineseHeader);
         self.fetchedResultsController = [orderedInfoModelController fetchedResultsControllerGroupByStatus];
         ////重新擷取資料庫資料，以便顯示的資料是最新的
@@ -159,16 +159,17 @@
             transition = UIViewAnimationTransitionCurlDown;
             break;
         case 1: //加點一份
-            //insertDish = [[EntityOrderedInfo alloc] initWithEntity:entity insertIntoManagedObjectContext:[selectedInfo managedObjectContext]];
-            //insertDish = selectedInfo.Order;   
-            //NSLog(@"????");
             [self.orderedInfoModelController insertBeOrderedDish:selectedInfo.Dish];
+            //[self.tableView reloadData];
+            [orderedInfoModelController refreshFetchedResultsController:fetchedResultsController];
+            indexPath = [self.fetchedResultsController indexPathForObject:[self.orderedInfoModelController orderedInfoFetchedWithDish:selectedInfo.Dish withStatus:0]];
+            
             break;
         case 2:{ 
             //刪減一份
             NSFetchRequest *request = [[NSFetchRequest alloc] init];//[self.orderedDishModelController createSimpleFetchRequest];
             [request setEntity:entity];
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"Dish = %@ AND  Ordered_Info=%@ And Status.Status_No = %d",selectedInfo.Dish,selectedInfo,actionSheet.tag];
+            //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"Dish = %@ AND  Ordered_Info=%@ And Status.Status_No = %d",selectedInfo.Dish,selectedInfo,actionSheet.tag];
             NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"Order_No" ascending:NO];
             //[request setPredicate:predicate];
             [request setSortDescriptors:[NSArray arrayWithObject:sort]];
@@ -189,15 +190,20 @@
             [managedObjectContext release];
             //設定刪除的動畫
             transition = UIViewAnimationTransitionCurlDown;
+            
+            [sort release];
+            [request release];
+            //[ordered release];
             break;
         }
+            [indexPath release];
     }
     //NSLog(@"%d,%d",buttonIndex,actionSheet.cancelButtonIndex);
     if(buttonIndex != actionSheet.cancelButtonIndex){
         //重新擷取資料庫資料，以便顯示的資料是最新的
     [orderedInfoModelController refreshFetchedResultsController:fetchedResultsController];  
-    [listViewController refreshPriceLabel];  
-    [listViewController refreshPriceLabel];
+    //[listViewController refreshPriceLabel];  
+    //[listViewController refreshPriceLabel];
     //更新合計標籤
     [listViewController refreshPriceLabel];;
         //[self reloadTableViewSelectToIndexPath:indexPath ];
@@ -208,7 +214,7 @@
 
 - (void) clearAllOrderingDish{
     
-    NSFetchedResultsController *fetchedController = [self.orderedInfoModelController fetchedDishSelectStatus:0];
+    NSFetchedResultsController *fetchedController = [self.orderedInfoModelController fetchedDishSelectStatus:0 withSection:nil];
     
     for (EntityOrderedInfo *info in [fetchedController fetchedObjects]) {
         [self.orderedInfoModelController deleteInfoAndRelativeOrderedDish:info];
@@ -342,15 +348,6 @@
      */
 }
 
-- (UIImage *) image:(UIImage *)image reSize:(CGSize)newSize{
-        UIGraphicsBeginImageContext(newSize);
-        [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-        UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();    
-        UIGraphicsEndImageContext();
-        return newImage;
-}
-
-
 #pragma mark -
 #pragma mark Table view data source
 
@@ -388,17 +385,10 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     EntityOrderedInfo *orderedInfo = [fetchedResultsController objectAtIndexPath:indexPath];
-    
-    NSURL *picPath = [orderedInfo.Dish getURLForMainImageFullPath];    
-    UIImage *pic = [UIImage imageWithContentsOfFile:[picPath path]];
-    UIImage *showPicture = [UIImage imageNamed:@"no_image.png"];
-    
-    if (pic) {
-        CGRect clip = CGRectMake(pic.size.width*0.25, pic.size.height*0.25, 200, 200);
-        
-        showPicture = [UIImage imageWithCGImage:CGImageCreateWithImageInRect(pic.CGImage , clip)];
-        showPicture =  [self image:showPicture reSize:CGSizeMake(100, 100)];
-    }
+       
+   
+    UIImage *showPicture = [orderedInfo.Dish imageForMainImageWithClip:YES];
+    showPicture =  [self image:showPicture reSize:CGSizeMake(100, 100)];
     
     
     NSString *formatString = [NSString stringWithFormat:@"\

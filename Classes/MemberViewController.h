@@ -7,17 +7,36 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "padOrderViewController.h"
+#import "SRViewController.h"
 #import "FBConnect.h"
-@interface MemberViewController : padOrderViewController{
-    Facebook *fb;
+#import "MemberDataTableViewController.h"
+#import "MemberSaveModelController.h"
+
+@interface MemberViewController : SRViewController<UITextFieldDelegate,UIScrollViewDelegate>{
+    BOOL isLoginState;
     UITextField *account;
     UITextField *password;
+    CGPoint loginScrollViewCenter;
+    CGPoint saveTableViewCenterHidden;
+    CGPoint saveTableViewCenterShown;
+    MemberDataTableViewController *tableViewController;
+    MemberSaveModelController *memberSaveModelController;
+    UIScrollView *contentScrollView;
 }
 
-@property (nonatomic, retain) Facebook *fb;
 @property (nonatomic, retain) IBOutlet UITextField *account;
 @property (nonatomic, retain) IBOutlet UITextField *password;
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic) BOOL isLoginState;
+@property (nonatomic, retain) IBOutlet UIScrollView *contentScrollView;
+@property (nonatomic, retain) MemberSaveModelController *memberSaveModelController;
+@property (nonatomic, retain) MemberDataTableViewController *tableViewController;
 - (IBAction) login:(id)sender;
+- (IBAction) logout:(id)sender;
+- (IBAction) clear:(id)sender;
+
+- (void) loginSuccessAction:(id)sender;
+- (IBAction) nextPasswordField:(id)sender;
+
 
 @end

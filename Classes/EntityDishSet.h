@@ -11,10 +11,10 @@
 
 
 @interface EntityDishSet : EntityRefer {
-    NSString *Set_Name;
-    NSString *Set_Note;
+
 }
 
+@property (nonatomic, retain) NSString *Set_No;
 @property (nonatomic, retain) NSString *Set_Name;
 @property (nonatomic, retain) NSString *Set_Note;
 @end

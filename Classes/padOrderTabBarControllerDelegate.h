@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "padOrderAppDelegate.h"
 //#import <Foundation/Foundation.h>
+#import "POObject.h"
 
 @class padOrderSplitControllerDelegate;
 @class MainFuncViewController;
 
-@interface padOrderTabBarControllerDelegate : NSObject <UITabBarControllerDelegate,UIAlertViewDelegate,UIActionSheetDelegate>{
+@interface padOrderTabBarControllerDelegate : POObject <UITabBarControllerDelegate,UIAlertViewDelegate,UIActionSheetDelegate,FBSessionDelegate>{
     padOrderSplitControllerDelegate *splitControllerDelegate;
     MainFuncViewController *mainViewController;
     UINavigationItem *splitPopoverButton;
@@ -29,4 +31,7 @@
 @property (nonatomic, retain) UIView *blackView;
 @property (nonatomic, retain) UIViewController *blackViewController;
 @property (nonatomic, retain) UIActionSheet *actionSheet;
+
+- (void) configureTabBarItemWithTabBarController:(UITabBarController *)tabBarController;
+
 @end

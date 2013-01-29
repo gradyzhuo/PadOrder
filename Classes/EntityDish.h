@@ -24,20 +24,26 @@
 
 @class EntityDescribe;
 @class EntityDishSet;
-@class EntityOrderKind;
+@class EntityDishKind;
 @class EntityImage;
 @interface EntityDish : EntityRefer{
 
 }
+@property (nonatomic, retain) NSNumber *willShow;
 @property (nonatomic, retain) NSArray *Images;
 @property (nonatomic, retain) NSString *Dish_Name;
 @property (nonatomic, retain) NSString *Dish_No;
 @property (nonatomic, retain) NSDate *Update_Date;
 @property (nonatomic, retain) EntityDescribe *Describe;
 @property (nonatomic, retain) EntityDishSet *DishSet;
-@property (nonatomic, retain) EntityOrderKind *Kind;
+@property (nonatomic, retain) EntityDishKind *Kind;
 @property (nonatomic, retain) NSNumber *Dish_Price;
+@property (nonatomic, retain) NSNumber *isSuggest;
+@property (nonatomic, retain) NSNumber *Type;
 
+- (NSString *)imageEntityForMainImage;
 - (NSURL *)getURLForMainImageFullPath;
+- (UIImage *) imageForMainImageWithClip:(BOOL)useClip;
+- (UIImage *) cuttedMainImageWithSize:(CGSize) size;
 
 @end

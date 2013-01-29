@@ -12,10 +12,11 @@
 @class EntityOrderKind;
 @class EntityDish;
 @interface DishDataModelController : padOrderModelObject{
-    
 }
 
 - (NSSet *) allDishes;
 - (NSFetchedResultsController *) fetchedResultsControllerGroupBySetWhereKindIs:(EntityOrderKind *)kind;
-
+- (NSFetchedResultsController *) fetchedResultsControllerWithSuggestDish;
+- (NSFetchedResultsController *)fetchedResultsControllerWithSearchText:(NSString *)searchText;
+- (EntityDish *)dishEntityWithDishNo:(NSString *)dish_no;
 @end

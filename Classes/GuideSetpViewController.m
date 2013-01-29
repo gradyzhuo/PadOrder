@@ -16,12 +16,13 @@
     UIButton *button = (UIButton *)sender;
     if (button.tag == 11) {
         //返回
+
         [self.navigationController popViewControllerAnimated:YES];
     }
     else if (button.tag == 12){
         //下一個
         button.tag = 0;
-        [self.padOrderDelegate actionToNext:button];
+        [self.applicationDelegate actionToNext:button];
     }
 }
 

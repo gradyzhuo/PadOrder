@@ -12,13 +12,12 @@
 #import "VarsButton.h"
 #import "FBConnect.h"
 #import "padOrderAppDelegate.h"
-
-#define FB_PADORDER_ID @"172228222789173"
-
+#import "POMoreImageViewController.h"
+#import "AllEntity.h"
 
 @interface TableCellViewClass : UITableViewCell <UITableViewDelegate,FBLoginDialogDelegate,FBSessionDelegate,FBDialogDelegate,FBSessionDelegate>{
     padOrderAppDelegate *applicationDelegate;
-    
+    EntityDish *dishEntityInfo;
     UIImageView *dishImageView;
     UILabel *titleLabel;
     UITextView *descriptTextView;
@@ -28,9 +27,12 @@
     UILabel *priceLabel;
 	UISlider *hotSplider;
     UILabel *shareLabel;
+    UIImageView *crownImageView;
+    UILabel *crownLabel;
+    VarsButton *dishImageButton;
 }
 @property (nonatomic, retain) padOrderAppDelegate *applicationDelegate;
-
+@property (nonatomic, retain) EntityDish *dishEntityInfo;
 @property (nonatomic, retain) UILabel *shareLabel;
 @property (nonatomic, retain) UIImage *dishImage;
 @property (nonatomic, retain) UIImageView *dishImageView;
@@ -40,7 +42,9 @@
 @property (nonatomic, retain) UITextView *descriptTextView;
 @property (nonatomic, retain) UILabel *priceLabel;
 @property (nonatomic, retain) UISlider *hotSplider;
-
+@property (nonatomic, retain) UIImageView *crownImageView;
+@property (nonatomic, retain) UILabel *crownLabel;
+@property (nonatomic, retain) VarsButton *dishImageButton;
 - (void) assignSetup;
 - (void) setImage:(UIImage *)image inFrame:(CGRect)frame; 
 //- (void) setButton:(UIButton *)button;
@@ -49,11 +53,13 @@
 - (void) setSubmitButton:(NSString *)normalImageName withShadow:(BOOL)canUseShowdow;
 - (void) setDetailButton:(NSString *)normalImageName withShadow:(BOOL)canUseShowdow;
 
-- (void) label:(UILabel *)label withPoint:(CGPoint)point setText:(NSString *)text andFontSize:(CGFloat)size;
+- (void) label:(UILabel *)label withPoint:(CGPoint)point setText:(NSString *)text andFontSize:(CGFloat)size andOffset:(CGSize)offset;
 - (void) setDishPrice:(NSNumber *)price andFontSize:(CGFloat)size;
 - (UIImage*)imageWithShadow : (UIImage *)image;
 - (CGFloat) pointFromRightSide:(CGFloat) width;
 - (CGFloat) pointFromButtomSide:(CGFloat) height;
 - (IBAction) shareToSocial:(id)sender;
+- (void) setCrownLabelText:(NSString *)text andFontSize:(CGFloat) size andOffset:(CGSize)offset;
+- (void) moreDishImage:(id)sender;
 
 @end

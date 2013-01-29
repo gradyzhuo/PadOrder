@@ -6,11 +6,16 @@
 	<array>
 		<string>Grady Zhuo</string>
 	</array>
-	<key>Programmers</key>
+	<key>Authors</key>
 	<array>
 		<string>Grady Zhuo</string>
 	</array>
 	<key>Version</key>
 	<string>0.1-alpha14</string>
+	<key>Contact</key>
+	<dict>
+		<key>Grady Zhuo</key>
+		<string>gradyzhuo@gmail.com</string>
+	</dict>
 </dict>
 </plist>

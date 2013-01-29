@@ -10,6 +10,9 @@
 #import "padOrderAppDelegate.h"
 #import "PadOrderLogoViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "LoginAlertView.h"
+#import "EntityMember.h"
+#import "MemberModelController.h"
 
 @implementation BeginViewController
 @synthesize infoButton;
@@ -17,16 +20,38 @@
 @synthesize logoViewController;
 @synthesize blackView;
 @synthesize testController;
+@synthesize currentUser;
+@synthesize restaurtantNameLabel;
 
 - (IBAction) actionToNext:(id)sender{
-    UIButton *button = (UIButton *)sender;
-    if (button.tag == 1){
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"確認身分" message:@"請輸入會員資格之身分證字號" delegate:self cancelButtonTitle:@"略過(非會員)" otherButtonTitles:@"確定", nil];
+    //UIViewController *viewController = [[UIViewController alloc] init];
+    //viewController.view.backgroundColor = [UIColor redColor];
+    //[[[self.applicationDelegate.mainSplitViewController viewControllers] lastObject] viewDidLoad];
+    //[self.applicationDelegate performSelector:@selector(actionToNext:) withObject:sender afterDelay:0];
+    //self.tabBarController.selectedIndex = 1;
+    [self.applicationDelegate actionToNext:sender];
+    
+    //[viewController.view performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:2];
+    /*UIButton *button = (UIButton *)sender;
+    //[self.applicationDelegate actionToNext:sender];
+    if ((button.tag == 1) && [[self.applicationDelegate.standardUserDefaults objectForKey:@"MEMBER_NAME"] isEqualToString:@"訪客"]){
+        NSLog(@"TEST 2");
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"確認身分" message:@"\n" delegate:self cancelButtonTitle:@"略過(或非會員)" otherButtonTitles:@"確定", nil];
+        
+        UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(12, 45, 260, 25)];
+        textField.tag = 2001;
+        textField.borderStyle = UITextBorderStyleRoundedRect;
+        //textField.backgroundColor = [UIColor whiteColor];
+        textField.placeholder = @"請輸入會員身分字號(包含英文)";
+        
+        [alertView addSubview:textField];
+        
         [alertView show];
     }
     else{
-        [self.padOrderDelegate actionToNext:sender];
-    }
+        NSLog(@"TEST3");
+        [self.applicationDelegate actionToNext:sender];
+    }*/
 }
 
 
@@ -35,9 +60,24 @@
     switch (buttonIndex) {
         case 0://非會員
             button.tag = 1;
-            [self.padOrderDelegate actionToNext:button];
+            [self.applicationDelegate.standardUserDefaults setObject:@"訪客" forKey:@"MEMBER_NAME"];
+            [self.applicationDelegate actionToNext:button];
             break;
         case 1://會員，並確認他輸入的部份
+        {
+            UITextField *textField = (UITextField *)[alertView viewWithTag:2001];
+            //EntityMember *member = 
+            MemberModelController *memberModelController = [[MemberModelController alloc] init];
+            EntityMember *member = [memberModelController fetchMemberEntityWithID:textField.text];
+            if(member){
+                [self.applicationDelegate.standardUserDefaults setObject:member.Member_Name forKey:@"MEMBER_NAME"];
+                [self.applicationDelegate.standardUserDefaults synchronize];
+            }
+            button.tag = 1;
+            [self.applicationDelegate actionToNext:button];
+            
+            
+        }
             break;
         default:
             break;
@@ -58,6 +98,7 @@
         //self.testController = [[UINavigationController alloc] initWithRootViewController:self.logoViewController];
         //self.testController.navigationBar.translucent = YES;
         [self.logoViewController.exitButton addTarget:self action:@selector(hidePadOrderInformation:) forControlEvents:UIControlEventTouchUpInside];
+        
     }
     return self;
 }
@@ -142,17 +183,37 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	//self.view.backgroundColor = [UIColor brownColor];
+    self.view.backgroundColor = [UIColor blackColor];
+    self.restaurtantNameLabel.text = [self.applicationDelegate.standardUserDefaults objectForKey:@"Restaurant_Name"];
+
+    	//self.view.backgroundColor = [UIColor brownColor];
     //[self.infoButton addTarget:self action:@selector(test) forControlEvents:UIControlStateNormal];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
+    
+    NSString *memberName = [self.applicationDelegate.standardUserDefaults objectForKey:@"MEMBER_NAME"];
+    if ([memberName isEqualToString:@"訪客"]) {
+        self.currentUser.hidden = YES;
+    }
+    else{
+        self.currentUser.text = [NSString stringWithFormat:@"目前使用者 : %@",memberName];
+        self.currentUser.hidden = NO;
+    }
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+    if (toInterfaceOrientation == UIInterfaceOrientationPortrait||toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+        return YES;
+    }
+    return NO;
 }
 
 

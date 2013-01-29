@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "EntityRefer.h"
-#import "EntityDish.h"
 
+@class EntityDish;
 @interface EntityImage : EntityRefer {
 
 }

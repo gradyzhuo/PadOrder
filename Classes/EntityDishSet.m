@@ -12,6 +12,6 @@
 @implementation EntityDishSet
 @dynamic Set_Name;
 @dynamic Set_Note;
-
+@dynamic Set_No;
 
 @end

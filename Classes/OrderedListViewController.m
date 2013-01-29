@@ -16,6 +16,7 @@
 #import "OrderedInfoModelController.h"
 #import "CustomAlertView.h"
 
+#import "CheckOrderedListViewController.h"
 #import "CookingTableViewController.h"
 
 @implementation OrderedListViewController
@@ -31,13 +32,13 @@
 @synthesize segmentControl;
 @synthesize cookingTableViewController;
 @synthesize naviBar;
-
-
+@synthesize deskNobutton;
+@synthesize popoverController;
 #pragma mark -
 #pragma mark Self-Method
 
 - (NSString *) getApplicationDocumentPath{
-    return [[[padOrderAppDelegate alloc] applicationDocumentsDirectory] path];
+    return [[padOrderAppDelegate applicationDocumentsDirectory] path];
 }
 
 - (CGSize) getContentSizeInPopover{
@@ -56,16 +57,19 @@
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    switch (buttonIndex) {
-        case 0:
-            [self.orderedTableViewController sendOrderingList];
-            [UIView beginAnimations:@"ShowSegement" context:nil];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-            [UIView setAnimationDuration:1];
-            self.segmentControl.alpha = 1;
-            [UIView commitAnimations];
-            break;
-    }
+
+}
+
+- (void) showSegment:(BOOL)willShow{
+
+    //[self.orderedTableViewController sendOrderingList];
+    [UIView beginAnimations:@"ShowSegement" context:nil];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDuration:1];
+    self.segmentControl.alpha = willShow;
+    self.tableView.frame = CGRectMake(12,124, 300, 455);
+    self.remindedView.frame = CGRectMake(12,124, 300, 455);
+    [UIView commitAnimations];
 }
 
 - (void) alertViewCancel:(UIAlertView *)alertView{
@@ -101,12 +105,15 @@
     self.contentSizeForViewInPopover = [self getContentSizeInPopover];
     
     
-    //NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    //NSInteger DESK_NO = [userDefault integerForKey:@"DESK_NO"];
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSInteger DESK_NO = [userDefault integerForKey:@"DESK_NO"];
     //NSString *deskTitle = [NSString stringWithFormat:@"第%d桌",DESK_NO];
+    
+    [self.deskNobutton setTitle:[NSString stringWithFormat:@"%d",DESK_NO] forState:UIControlStateNormal];
     
     //self.title = deskTitle;
     self.title = @"點餐清單";
+    self.navigationController.navigationBarHidden = YES;
     self.navigationItem.prompt = nil;
     
     //self.title = [NSString stringWithFormat:@"第%d桌",DESK_NO];
@@ -235,7 +242,18 @@
     [UIView beginAnimations:@"Hidden" context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:1];
-    
+    if (count>0 && [orderedTableViewController.fetchedResultsController.sections count]==1) {
+        //self.totalPriceLabel.alpha = 0;
+        self.segmentControl.alpha = 0;
+        //self.totalPriceLabel.hidden = YES;
+        //self.segmentControl.hidden = YES;
+        self.tableView.frame = CGRectMake(12,61, 300, 551);
+        self.remindedView.frame = CGRectMake(12,61, 300, 551);
+        self.submitButton.enabled = NO;
+        self.clearAllButton.enabled = NO;
+        //self.clearAllButton.hidden = YES;
+        self.navigationItem.rightBarButtonItem.customView.alpha = 1;
+    }
     if(count==0){
         isFetched = NO;
         //[UIView set]
@@ -243,6 +261,8 @@
         self.segmentControl.alpha = 0;
         //self.totalPriceLabel.hidden = YES;
         //self.segmentControl.hidden = YES;
+//self.tableView.frame = CGRectMake(12,61, 300, 585);
+        self.remindedView.frame = CGRectMake(12,61, 300, 585);
         self.submitButton.enabled = NO;
         self.clearAllButton.enabled = NO;
         //self.clearAllButton.hidden = YES;
@@ -252,6 +272,8 @@
     else {
         self.navigationItem.rightBarButtonItem = nil;
         self.totalPriceLabel.alpha = 1;
+        self.tableView.frame = CGRectMake(12,61, 300, 551);
+        self.remindedView.frame = CGRectMake(12,61, 300, 551);
         //self.segmentControl.alpha = 1;
         //self.totalPriceLabel.hidden = NO;
         //self.segmentControl.hidden = NO;
@@ -279,7 +301,23 @@
 
 - (IBAction) billSender:(id)sender{
     if([self.orderedTableViewController.orderedInfoModelController isExistOrderingList]){
-        NSMutableString *listString = [NSMutableString stringWithString:@"您已點的清單如下:\n"];
+        
+        
+        
+        CheckOrderedListViewController *checkViewController = [[CheckOrderedListViewController alloc] initWithNibName:@"CheckOrderedListView" bundle:[NSBundle mainBundle]];
+        checkViewController.slideView.layer.cornerRadius = 10;
+        checkViewController.slideView.layer.masksToBounds = YES;
+        checkViewController.slideView.layer.borderWidth = 5;
+        checkViewController.slideView.layer.borderColor = [[UIColor whiteColor] CGColor];
+        checkViewController.orderedListViewController = self;
+        [checkViewController showView:self];
+        
+        
+        if (self.applicationDelegate.splitPopoverController.popoverVisible) {
+            [self.applicationDelegate.splitPopoverController dismissPopoverAnimated:YES];
+        }
+        
+        /*NSMutableString *listString = [NSMutableString stringWithString:@"您已點的清單如下:\n"];
         
         NSInteger dishCount = 1;
         for (EntityOrderedInfo *infoObject in [[self.orderedTableViewController.orderedInfoModelController fetchedDishSelectStatus:0] fetchedObjects]) {
@@ -290,7 +328,9 @@
         CustomAlertView *alertView = [[CustomAlertView alloc] initWithTitle:@"是否確定送出烹飪？" message:listString cancelButtonTitle:@"確定" otherButtonTitles:@"取消"];
         alertView.tag = 0;
         [alertView show];
+        [alertView release];
         alertView.delegate = self;
+         */
         
     }
     else {
@@ -299,6 +339,8 @@
         UIAlertView *checkAlertView = [[UIAlertView alloc] initWithTitle:@"結帳" message:@"將為您聯絡服務人員，請耐心等候..." delegate:self cancelButtonTitle:@"確定" otherButtonTitles:nil];
         checkAlertView .tag = 1;
         [checkAlertView show];
+        [checkAlertView release];
+        
     }
         //[self checkHasFetched];
 }
@@ -387,7 +429,9 @@
     }
     
     [self.tableView reloadData];
-    NSLog(@"%@",indexPath);
+
+    if(indexPath.row > [self.tableView numberOfRowsInSection:indexPath.section])
+        indexPath = nil;
     if(indexPath != nil) [self.tableView selectRowAtIndexPath: indexPath animated:boolean scrollPosition:UITableViewScrollPositionBottom];
     [UIView commitAnimations];
 }

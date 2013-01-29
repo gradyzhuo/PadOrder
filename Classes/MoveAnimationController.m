@@ -40,26 +40,6 @@
     return self;
 }
 
-- (UIImage *) screenshotWithView:(UIView *)view{
-    
-    //UIGraphicsBeginImageContext(view.bounds.size);
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, 1);
-    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *image= UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    /*
-    CGSize viewSize = CGSizeMake(view.frame.size.width, view.frame.size.height); 
-    UIGraphicsBeginImageContext(viewSize);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [view.layer renderInContext:context];
-    UIImage *screenShot = UIGraphicsGetImageFromCurrentImageContext();
-    //NSLog(@"%@",screenShot);
-    UIGraphicsEndImageContext();
-    */
-     //return screenShot;
-    return image;
-}
-
 - (CGRect) relativeToAbsolute:(UIView *)view{
     UIView *pView = view;
     CGFloat x = 0;
@@ -103,7 +83,7 @@
     
     aView.backgroundColor = startBg;
     
-    UIImage *screenshot = [self screenshotWithView:aView];
+    UIImage *screenshot = [MoveAnimationController screenshotWithView:aView];
 
     aView.backgroundColor = [UIColor colorWithCGColor:viewBackgroundColor.CGColor];
 
